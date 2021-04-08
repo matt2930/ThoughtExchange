@@ -1,3 +1,4 @@
 python-socketio
 python-engineio
 aiohttp
+aio-pika

@@ -54,12 +54,11 @@ def on_request(ch, method, props, body):
     n = int(body)
     print(" [.] fib(%s)" % n)
     response = fib(n)
+    print ("Fib Result: %s" % response)
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
-                     properties=pika.BasicProperties(correlation_id = \
-                                                        props.correlation_id),
                      body=str(response))
-    ch.basic_ack(delivery_tag=method.delivery_tag)
+    print("Sent Reponse")
 
 connected = False
 while not connected:
@@ -67,15 +66,14 @@ while not connected:
         connection = pika.BlockingConnection(pika.ConnectionParameters('messagequeue'))
         connected = True
     except:
-        print("Could not connect")
+        print("Could not connect to queue: messagequeue")
         sleep(5)
 channel = connection.channel()
 channel.queue_declare(queue='rpc_queue')
 
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume(queue='rpc_queue',on_message_callback=on_request)
+channel.basic_consume(queue='rpc_queue', auto_ack=True, on_message_callback=on_request)
 
 print(" [x] Awaiting RPC requests")
 channel.start_consuming()
-
-daemonize()
+# daemonize()

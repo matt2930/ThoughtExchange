@@ -3,14 +3,12 @@ import pika
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/', methods=['GET'])
 def index():
-    if request.method == 'GET':
         return render_template('index.html')
-    else:
-        return redirect('/fib')
 
-@app.route('/fib')
+
+@app.route('/fib', methods=['POST'])
 def index2():
     num = request.form['number']
     connected = False
@@ -21,8 +19,17 @@ def index2():
         except:
             print("Could not connect")
     channel = connection.channel()
-
-    channel.basic_publish(routing_key='rpc_queue', body=str(num))
+    channel.queue_declare(queue='rpc_queue')
+    result = channel.queue_declare(queue='response')
+    callback_queue = result.method.queue
+    channel.basic_publish(exchange='', 
+                          routing_key='rpc_queue',
+                          properties=pika.BasicProperties(
+                            reply_to = callback_queue
+                            ), 
+                          body=str(num))
+    connection.close()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')

@@ -9,4 +9,4 @@ COPY ./ ./
 
 RUN pip install --no-cache -r requirements.txt
 
-CMD ["python3","fib.py"]
+CMD ["python3", "-u", "fib.py"]
