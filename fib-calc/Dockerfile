@@ -9,4 +9,6 @@ COPY ./ ./
 
 RUN pip install --no-cache -r requirements.txt
 
-CMD ["python3", "-u", "fib.py"]
+RUN chmod +x /usr/src/fib/fib.py
+
+CMD ["nohup", "python3", "-u", "/usr/src/fib/fib.py", "&"]
