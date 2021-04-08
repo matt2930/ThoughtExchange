@@ -2,6 +2,7 @@
 import pika
 import uuid
 
+#code comes from RabbitMQ Tutorial
 class FibonacciRpcClient(object):
 
     def __init__(self):

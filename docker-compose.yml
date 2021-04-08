@@ -1,1 +1,30 @@
 version: "3"
+
+services:
+    web-app:
+        container_name: web-app
+        restart: always
+        build:
+            context: ./web-app
+        ports:
+            - "5000:5000"
+
+    nginx:
+        container_name: nginx
+        build:
+            context: ./nginx
+        ports:
+            - "80:80"
+        depends_on:
+            - web-app
+    # websocket:
+    #     build:
+    #         context: ./websocket
+
+    # message-queue:
+    #     build:
+    #         context: ./message-queue
+    
+    # fib-calc:
+    #     build:
+    #         content: ./fib-calc

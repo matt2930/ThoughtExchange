@@ -1,22 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- <head>
+<head>
     <script type="text/javascript" src="////cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <title>TestTitle</title>
-</head> -->
+</head>
 <body>
-    <!-- <script type="text/javascript" charset="utf-8">
+    <script type="text/javascript" charset="utf-8">
         var socket = io();
         socket.on('connect', function() {
             socket.emit('my event', {data: 'I\'m connected!'});
         });
-    </script> -->
+    </script>
     <h1>ThoughtExchange Fibonnaci App</h1>
-    <form action="http://localhost:5000/fib" method="post">
+    <form method="post">
         <label for="number">Enter Fibonnaci Number Here:</label><br>
         <input type="text" name="number"></input><br>
         <input type="submit"><br>
     </form>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on("connect", function() {
+            console.log(socket.id);
+            console.log("socket connected!")
+        });
+    </script>
+
 </body>
 
 </html>
