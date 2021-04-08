@@ -2,13 +2,14 @@ version: "3"
 
 services:
     web-app:
-        container_name: web-app
+        container_name: webapp
         restart: always
         build:
             context: ./web-app
         ports:
             - "5000:5000"
-
+        networks:
+            - default
     nginx:
         container_name: nginx
         build:
@@ -17,10 +18,17 @@ services:
             - "80:80"
         depends_on:
             - web-app
-    # websocket:
-    #     build:
-    #         context: ./websocket
-
+        networks:
+            - default
+    websocket:
+        container_name: websocket
+        restart: always
+        build:
+            context: ./websocket
+        ports:
+            - "8080:8080"
+        networks:
+            - default
     # message-queue:
     #     build:
     #         context: ./message-queue
@@ -28,3 +36,6 @@ services:
     # fib-calc:
     #     build:
     #         content: ./fib-calc
+
+networks:
+    default:
