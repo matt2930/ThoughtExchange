@@ -29,13 +29,27 @@ services:
             - "8080:8080"
         networks:
             - default
-    # message-queue:
-    #     build:
-    #         context: ./message-queue
-    
-    # fib-calc:
-    #     build:
-    #         content: ./fib-calc
+    message-queue:
+        container_name: messagequeue
+        restart: always
+        image: rabbitmq:3-management
+        # build:
+        #     context: ./message-queue
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        hostname: messagequeue
+        networks:
+            - default
+    fib-calc:
+        container_name: fibcalc
+        restart: always
+        build:
+            context: ./fib-calc
+        networks:
+            - default
+        depends_on:
+            - messagequeue
 
 networks:
     default:
