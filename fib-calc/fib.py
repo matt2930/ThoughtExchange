@@ -1,4 +1,10 @@
 import pika
+import os, sys
+from time import sleep
+
+fpid = os.fork()
+if fpid != 0:
+    sys.exit(0)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
@@ -13,6 +19,7 @@ def fib(n):
         a = b
         b = c
     return c
+
 
 def on_request(ch, method, props, body):
     n = int(body)
